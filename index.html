@@ -4,57 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script>
-    function startTimer(duration, display) {
-        var start = Date.now(),
-          diff,
-          minutes,
-          seconds;
-        function timer() {
-          // get the number of seconds that have elapsed since 
-          // startTimer() was called
-          diff = duration - (((Date.now() - start) / 1000) | 0);
-
-          // does the same job as parseInt truncates the float
-          minutes = (diff / 60) | 0;
-          seconds = (diff % 60) | 0;
-
-          minutes = minutes < 0 ? "0" : minutes;
-          seconds = seconds < 0 ? "0" : seconds;
-
-          minutes = minutes < 10 ? "0" + minutes : minutes;
-          seconds = seconds < 10 ? "0" + seconds : seconds;
-
-          // Puts minutes and seconds onto page
-          display.textContent = minutes + " minutes, " + seconds + " seconds";
-
-          if (diff <= 0) {
-            // add one second so that the count down starts at the full duration
-            // example 05:00 not 04:59
-            start = Date.now() + 1000;
-          }
-        };
-        // we don't want to wait a full second before the timer starts
-        // TODO: create conditional to stop the timer when time runs out
-        timer();
-        setInterval(timer, 1000);
-      }
-
-      window.onload = function () {
-        var fiveMinutes = 60 * 5,
-          display = document.querySelector('#time');
-
-        // ! Change these values depending on when the graduation date/time is
-        const dressRehearsalTime = '2020-05-05T12:20:00';
-        const realShowcaseTime = '2020-07-02T17:40:00';
-
-        // Provides difference between current time and scheduled start time
-        const timeDifference = (new Date(realShowcaseTime) - new Date()) / 1000;
-
-        // Starts recursive timer call
-        startTimer(timeDifference, display);
-      };
-  </script>
   <style>
     @keyframes revolveBg {
       0% {
@@ -95,7 +44,7 @@
 
     }
 
-    .date {
+    .today {
       color: #EFC319;
     }
 
@@ -143,7 +92,7 @@
 </head>
 <body>
   <h1>Welcome to <br/> Operation Spark <br/> Graduation!</h1>
-  <h3 class="date">May 07, 2020</h3>
+  <h3 id="today" class="today">May 07, 2020</h3>
   <h2>Showcase begins in <span id="time"></span>!</h2>
   <div class="social-section-container">
     <p>Attend an info session to learn more</p>
@@ -170,5 +119,58 @@
   </div>
   <div class="block"></div>
   <img class="hallebot" src="./hallebot-graduate.svg" alt="">
+  <script>
+    function startTimer(duration, display) {
+      var start = Date.now(),
+        diff,
+        minutes,
+        seconds;
+      function timer() {
+        // get the number of seconds that have elapsed since 
+        // startTimer() was called
+        diff = duration - (((Date.now() - start) / 1000) | 0);
+
+        // does the same job as parseInt truncates the float
+        minutes = (diff / 60) | 0;
+        seconds = (diff % 60) | 0;
+
+        minutes = minutes < 0 ? "0" : minutes;
+        seconds = seconds < 0 ? "0" : seconds;
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        // Puts minutes and seconds onto page
+        display.textContent = minutes + " minutes, " + seconds + " seconds";
+
+        if (diff <= 0) {
+          // add one second so that the count down starts at the full duration
+          // example 05:00 not 04:59
+          start = Date.now() + 1000;
+        }
+      };
+      // we don't want to wait a full second before the timer starts
+      // TODO: create conditional to stop the timer when time runs out
+      timer();
+      setInterval(timer, 1000);
+    }
+
+    window.onload = function () {
+      var timerDisplay = document.querySelector('#time');
+      var currentDateDisplay = document.querySelector('#today');
+
+      currentDateDisplay.textContent = new Date().toDateString();
+
+      // ! Change these values depending on when the graduation date/time is
+      const dressRehearsalTime = '2020-05-05T12:20:00';
+      const realShowcaseTime = '2020-07-02T17:40:00';
+
+      // Provides difference between current time and scheduled start time
+      const timeDifference = (new Date(realShowcaseTime) - new Date()) / 1000;
+
+      // Starts recursive timer call
+      startTimer(timeDifference, timerDisplay);
+    };
+  </script>
 </body>
 </html>
